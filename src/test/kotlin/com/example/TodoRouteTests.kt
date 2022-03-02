@@ -12,7 +12,7 @@ import io.ktor.server.testing.*
 
 class TodoRouteTests {
 
-    @Test // Note: get all list
+    @Test
     fun getAllTodo() {
         withTestApplication(Application::module) {
             handleRequest(HttpMethod.Get, "/todo").apply {
@@ -31,7 +31,7 @@ class TodoRouteTests {
         }
     }
 
-    @Test // Note: post to-do
+    @Test
     fun postTodo(){
         withTestApplication(Application::module) {
             with(handleRequest(HttpMethod.Post, "/todo"){
@@ -56,7 +56,7 @@ class TodoRouteTests {
     }
 
 
-    @Test // Note: to-do completed
+    @Test
     fun completeTodo(){
         withTestApplication(Application::module) {
             with(handleRequest(HttpMethod.Put, "/completed/3"){
@@ -69,7 +69,7 @@ class TodoRouteTests {
         }
     }
 
-    @Test // Note: to-do completed
+    @Test
     fun getCompletedTodo(){
         withTestApplication(Application::module) {
             with(handleRequest(HttpMethod.Get, "/completed"){
@@ -94,7 +94,7 @@ class TodoRouteTests {
         }
     }
 
-    @Test // Note: to-do completed
+    @Test
     fun deleteCompletedTodo(){
         withTestApplication(Application::module) {
             with(handleRequest(HttpMethod.Delete, "/completed"){

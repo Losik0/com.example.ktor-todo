@@ -1,6 +1,5 @@
 package com.example.service
 
-import com.example.dao.TodoRepo
 import com.example.models.TodoBody
 
 interface TodoService {

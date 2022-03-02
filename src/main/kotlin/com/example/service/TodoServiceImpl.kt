@@ -3,10 +3,11 @@ package com.example.service
 import com.example.dao.TodoRepo
 import com.example.models.TodoBody
 
-// TODO : 예외 처리 추가, map으로 묶어서 보내는게 아닌가?
+// Todo : 예외 처리 추가
 class TodoServiceImpl(val repo: TodoRepo): TodoService {
 
     // not working on TodoRoutes....?
+    // note: map 으로 묶어서 보내는게 아닌가?
     override fun todoMain(): Map<String, Any> {
         val todoList = repo.getAllTodo()
         return mapOf("size" to todoList.size, "to_do_list" to todoList)

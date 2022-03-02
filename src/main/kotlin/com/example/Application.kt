@@ -2,9 +2,6 @@ package com.example
 
 import com.example.dao.DAOFacadeDatabase
 import com.example.dao.TodoRepoImpl
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import com.example.plugins.*
 
 import io.ktor.application.*
 import io.ktor.features.*
