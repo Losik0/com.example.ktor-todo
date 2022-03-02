@@ -69,7 +69,7 @@ fun Route.todoCompletedRouting(service: TodoService){
         //note: delete all of completed items
         delete {
             service.deleteCom()
-            call.respondText("", status=HttpStatusCode.Accepted)
+            call.respondText("Completed Todo Deleted", status=HttpStatusCode.Accepted)
         }
     }
 }
