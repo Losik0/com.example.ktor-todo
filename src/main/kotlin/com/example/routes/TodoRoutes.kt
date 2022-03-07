@@ -9,67 +9,54 @@ import io.ktor.response.*
 
 fun Route.todoRouting(service: TodoService) {
     route("/todo") {
-        // get List
         get {
             call.respond(service.getAllTodo())
         }
-        //get one item
         get("{id}") {
             val id = call.parameters["id"]?: return@get call.respondText(
                 "Missing id", status=HttpStatusCode.BadRequest
             )
-            val todo = service.getTodo(id.toInt()) ?: return@get call.respondText(
+            val todo = service.getTodo(id.toInt())?: return@get call.respondText(
                     "No todo item with id $id", status=HttpStatusCode.NotFound
             )
             call.respond(todo)
         }
-        //post item
         post {
             val parameters = call.receiveParameters()
-            service.createTodo(parameters["contents"].toString())
-            call.respondText("Todo stored", status= HttpStatusCode.Created)
+            val todo = service.createTodo(parameters["contents"].toString()) ?: return@post call.respondText(
+                "Todo Insert Failed", status=HttpStatusCode.NotFound
+            )
+            call.respond(todo)
         }
-        //delete item
         delete("{id}") {
-            val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            val id = call.parameters["id"]?: return@delete call.respond(HttpStatusCode.BadRequest)
             service.deleteTodo(id.toInt())
             call.respondText("Todo Deleted", status=HttpStatusCode.Accepted)
-        }
-        //get item size
-        get("items"){
-            call.respond(mapOf("size" to service.getAllTodo().size))
         }
     }
 }
 
 fun Route.todoCompletedRouting(service: TodoService){
-    route("/completed"){
-
-        //make item completed
+    route("/completed") {
         put("{id}") {
             val id = call.parameters["id"] ?: return@put call.respond(HttpStatusCode.BadRequest)
             service.completeTodo(id.toInt())
-            call.respondText("Todo finished", status=HttpStatusCode.Accepted)
+            call.respondText("Todo finished", status = HttpStatusCode.Accepted)
         }
-
-        //get completed
         get {
-            call.respond(service.getComTodo())
+            call.respond(service.getTodoListByOption(true))
         }
-
-        get("un") {
-            call.respond(service.getUnComTodo())
-        }
-
-        //delete all of completed items
         delete {
-            service.deleteCom()
-            call.respondText("Completed Todo Deleted", status=HttpStatusCode.Accepted)
+            service.deleteAllCompletedTodo()
+            call.respondText("Completed Todo Deleted", status = HttpStatusCode.Accepted)
+        }
+    }
+    route("/active"){
+        get {
+            call.respond(service.getTodoListByOption(false))
         }
     }
 }
-
-
 
 fun Application.registerTodoRoutes(services: TodoService){
     routing{
